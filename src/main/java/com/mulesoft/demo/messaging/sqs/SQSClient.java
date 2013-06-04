@@ -43,7 +43,7 @@ import java.io.File;
  */
 public class SQSClient {
 
-    public static String LEADS_Q = "https://sqs.us-east-1.amazonaws.com/628374222115/leads";
+    public static String LEADS_Q = "https://sqs.us-west-1.amazonaws.com/628374222115/leads";
 
     public static AmazonSQS getClient() {
 
@@ -68,7 +68,7 @@ public class SQSClient {
                 System.out.println("REFRESH CALLED");
             }
         });
-        Region usWest2 = Region.getRegion(Regions.US_EAST_1);
+        Region usWest2 = Region.getRegion(Regions.US_WEST_2);
         sqs.setRegion(usWest2);
 
         System.out.println("===========================================");
@@ -108,12 +108,13 @@ public class SQSClient {
             System.out.println();
 
             CSVReader.readCSV(new File(args[0]), new CSVReader.LineHandler() {
-                int counter = 0;
+                int counter = 1;
                 public void handle(String line) {
+                    System.out.println("Message #: " + counter++);
                     String json = convertToJSON(line);
                     System.out.println("Sending a message to Queue: " + json + "\n");
                     sqs.sendMessage(new SendMessageRequest(LEADS_Q, json));
-                    System.out.println("Messages sent: " + counter++);
+
                 }
             });
 
