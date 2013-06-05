@@ -1,17 +1,4 @@
-package com.mulesoft.demo.messaging.sqs;/*
- * Copyright 2010-2013 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
- * A copy of the License is located at
- *
- *  http://aws.amazon.com/apache2.0
- *
- * or in the "license" file accompanying this file. This file is distributed
- * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
- */
+package com.mulesoft.demo.messaging.sqs;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
@@ -29,24 +16,14 @@ import org.springframework.util.StringUtils;
 import java.io.File;
 
 /**
- * This sample demonstrates how to make basic requests to Amazon SQSClient using the
- * AWS SDK for Java.
- * <p>
- * <b>Prerequisites:</b> You must have a valid Amazon Web
- * Services developer account, and be signed up to use Amazon SQSClient. For more
- * information on Amazon SQSClient, see http://aws.amazon.com/sqs.
- * <p>
- * <b>Important:</b> Be sure to fill in your AWS access credentials in the
- *                   AwsCredentials.properties file before you try to run this
- *                   sample.
- * http://aws.amazon.com/security-credentials
+ * Uses the AWS SDK to post messages to a SQS queue.
+ *
+ * todo - extract hardcoded region and credentials to a config file
  */
 public class SQSClient {
-
     public static String LEADS_Q = "https://sqs.us-west-1.amazonaws.com/628374222115/leads";
 
     public static AmazonSQS getClient() {
-
         AmazonSQS sqs = new AmazonSQSClient(new AWSCredentialsProvider() {
             @Override
             public AWSCredentials getCredentials() {
@@ -79,9 +56,9 @@ public class SQSClient {
     }
 
     public static String convertToJSON(String src) {
-        TreeMapper treeMapper = new TreeMapper();
-        ObjectNode rootObj = treeMapper.objectNode() ;
         String[] nextLead = StringUtils.commaDelimitedListToStringArray(src);
+
+        ObjectNode rootObj = new TreeMapper().objectNode() ;
         rootObj.put("FirstName", nextLead[0]);
         rootObj.put("LastName", nextLead[1]);
         rootObj.put("Company", nextLead[2]);
@@ -96,7 +73,6 @@ public class SQSClient {
         rootObj.put("Web", nextLead[11]);
 
         return rootObj.toString();
-
     }
 
     public static void main(String[] args) throws Exception {
