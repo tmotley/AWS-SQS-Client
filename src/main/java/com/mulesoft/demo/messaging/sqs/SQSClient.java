@@ -62,15 +62,15 @@ public class SQSClient {
         rootObj.put("FirstName", nextLead[0]);
         rootObj.put("LastName", nextLead[1]);
         rootObj.put("Company", nextLead[2]);
-        rootObj.put("Address", nextLead[3]);
+        rootObj.put("Street", nextLead[3]);
         rootObj.put("City", nextLead[4]);
         rootObj.put("County", nextLead[5]);
         rootObj.put("State", nextLead[6]);
-        rootObj.put("ZIP", nextLead[7]);
+        rootObj.put("Zip", nextLead[7]);
         rootObj.put("Phone", nextLead[8]);
         rootObj.put("Fax", nextLead[9]);
         rootObj.put("Email", nextLead[10]);
-        rootObj.put("Web", nextLead[11]);
+        rootObj.put("Website", nextLead[11]);
 
         return rootObj.toString();
     }
