@@ -8,6 +8,7 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClient;
+import com.amazonaws.services.sqs.model.DeleteQueueRequest;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 import org.codehaus.jackson.map.TreeMapper;
 import org.codehaus.jackson.node.ObjectNode;
@@ -16,12 +17,12 @@ import org.springframework.util.StringUtils;
 import java.io.File;
 
 /**
- * Uses the AWS SDK to post messages to a SQS queue.
+ * Uses the AWS SDK to post messages to an SQS queue.
  *
  * todo - extract hardcoded region and credentials to a config file
  */
 public class SQSClient {
-    public static String LEADS_Q = "https://sqs.us-west-1.amazonaws.com/628374222115/leads";
+    public static String LEADS_Q = "https://sqs.us-east-1.amazonaws.com/628374222115/leads";
 
     public static AmazonSQS getClient() {
         AmazonSQS sqs = new AmazonSQSClient(new AWSCredentialsProvider() {
@@ -45,7 +46,7 @@ public class SQSClient {
                 System.out.println("REFRESH CALLED");
             }
         });
-        Region usWest2 = Region.getRegion(Regions.US_WEST_2);
+        Region usWest2 = Region.getRegion(Regions.US_EAST_1);
         sqs.setRegion(usWest2);
 
         System.out.println("===========================================");
@@ -80,7 +81,6 @@ public class SQSClient {
         try {
 
             final AmazonSQS sqs = getClient();
-
             System.out.println();
 
             CSVReader.readCSV(new File(args[0]), new CSVReader.LineHandler() {
