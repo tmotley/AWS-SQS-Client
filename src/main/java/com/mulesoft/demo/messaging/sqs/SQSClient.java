@@ -2,13 +2,11 @@ package com.mulesoft.demo.messaging.sqs;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.ClasspathPropertiesFileCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClient;
-import com.amazonaws.services.sqs.model.DeleteQueueRequest;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 import org.codehaus.jackson.map.TreeMapper;
 import org.codehaus.jackson.node.ObjectNode;
@@ -19,33 +17,13 @@ import java.io.File;
 /**
  * Uses the AWS SDK to post messages to an SQS queue.
  *
- * todo - extract hardcoded region and credentials to a config file
  */
 public class SQSClient {
     public static String LEADS_Q = "https://sqs.us-east-1.amazonaws.com/628374222115/leads";
 
     public static AmazonSQS getClient() {
-        AmazonSQS sqs = new AmazonSQSClient(new AWSCredentialsProvider() {
-            @Override
-            public AWSCredentials getCredentials() {
-                return new AWSCredentials() {
-                    @Override
-                    public String getAWSAccessKeyId() {
-                        return "AKIAIIWYWCHEIEHDD4SQ";
-                    }
+        AmazonSQS sqs = new AmazonSQSClient(new ClasspathPropertiesFileCredentialsProvider());
 
-                    @Override
-                    public String getAWSSecretKey() {
-                        return "iC8BxPZ2N4k9/W38InatHzp9y4Qn+256nvkwoE6F";
-                    }
-                };
-            }
-
-            @Override
-            public void refresh() {
-                System.out.println("REFRESH CALLED");
-            }
-        });
         Region usWest2 = Region.getRegion(Regions.US_EAST_1);
         sqs.setRegion(usWest2);
 
